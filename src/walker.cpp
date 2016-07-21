@@ -2084,6 +2084,7 @@ void partRWTransitionCounter(Graph graph, char* dumpDir, char* nettype, int num_
     vector < vector <double> > tranMatrix = vector < vector <double> > ( allKnownNodes, vector <double> (allKnownNodes,0));
     vector < vector <double> > tranMatrixNormal = vector < vector <double> > ( allKnownNodes, vector <double> (allKnownNodes,0));
     vector < double > tranArrayNormal = vector <double> (allKnownNodes,0);
+    vector < double > tranArray = vector <double> (allKnownNodes,0);
 
     for (size_t i=0;i<graph.nodesLst.size();i++) {
         if (graph.nodesLst[i].auxID>=0) {
@@ -2119,6 +2120,7 @@ void partRWTransitionCounter(Graph graph, char* dumpDir, char* nettype, int num_
                         tranArrayNormal[prvKnownIndex] += 1.0/deg;
 
                         tranMatrix[prvKnownIndex][newKnownIndex] = n;
+                        tranArray[prvKnownIndex]++;
 
                         distSumMatrix[prvKnownIndex][newKnownIndex] += dist;
                         distSqSumMatrix[prvKnownIndex][newKnownIndex] += pow(dist,2);
@@ -2161,6 +2163,7 @@ void partRWTransitionCounter(Graph graph, char* dumpDir, char* nettype, int num_
                     <<"\t"<<tranMatrixNormal[i][j]
                     <<"\t"<<(tranMatrixNormal[i][j]*maxJumps/tranArrayNormal[i])+(tranMatrixNormal[j][i]*maxJumps/tranArrayNormal[j])
                     <<"\t"<<tranMatrix[i][j]
+                    <<"\t"<<tranMatrix[i][j]/tranArray[i]
                     <<"\t"<<distSumMatrix[i][j]
                     <<"\t"<<distSqSumMatrix[i][j]
                     <<"\t"<<distStdDevMatrix[i][j]

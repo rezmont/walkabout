@@ -1003,7 +1003,7 @@ int main ( int argc, char **argv ) {
 
         break;
     }
-    case 20: { // RW transition Prob
+    case 20: { /* RW transition Prob */
         if((nodePartFile == NULL) && (RW_dist_file == NULL) && (center==-1)) {
             printf("Unexpected option : either RWdistFile, PartFile or a center node should be provided\n");
             exit(-1);
