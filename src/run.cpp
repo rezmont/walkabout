@@ -161,7 +161,7 @@ int main ( int argc, char **argv ) {
     }
     switch (task)
     {
-    case 1://run walks and dump
+    case 1: //run walks and dump
     {
         if ((strcmp(netType,"-1")==0)||(strcmp(walkDir,"-1")==0))
         {
@@ -964,7 +964,14 @@ int main ( int argc, char **argv ) {
             end_t=clock();
             printf("graph bin loaded in %f secs.\n\n",double(diffclock(end_t,begin_t)));
             break;
-        } }
+        }
+        };
+        if ((strcmp(netType,"-1")==0)||(strcmp(dumpDir,"-1")==0)) {
+            printf("Unexpected option : nettype AND dumpdir should be defined\n");
+            exit (1);
+        } else {
+
+        }
         break;
     }
     case 19: {// based on group-memberships evaluate the entropy or group region membership confidence
@@ -1142,6 +1149,37 @@ int main ( int argc, char **argv ) {
         //        printf("loaded communities in %f secs.\n\n",double(diffclock(end_t,begin_t)));
         //        communityProperties(graph, allCommunities, outFile);
         //        break;
+    case 25: { /* dump node degrees */
+        switch (graph_type) {
+        case 5: {
+            unsigned begin_t=clock();
+            graph = graph_new_load(topofile);
+            unsigned end_t=clock();
+            printf("# graph loaded in %f secs.\n",double(diffclock(end_t,begin_t)));
+            break;
+        }
+        case 6: {
+            QFile file(topofile);
+            unsigned begin_t=clock();
+            file.open(QIODevice::ReadOnly);
+            QDataStream ds2(&file);
+            ds2 >> graph;
+            unsigned end_t=clock();
+            printf("graph bin loaded in %f secs.\n\n",double(diffclock(end_t,begin_t)));
+            break;
+        }
+        default:
+            exit(-1);
+        };
+        if ((strcmp(netType,"-1")==0)||(strcmp(dumpDir,"-1")==0)) {
+            printf("Unexpected option : nettype AND dumpdir should be defined\n");
+            exit (1);
+        } else {
+            dumpGraphDegree(graph, dumpDir, netType);
+        }
+        break;
+
+    }
     }
     if (dumponly) {
         displayGraph(graph);

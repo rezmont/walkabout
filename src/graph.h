@@ -508,3 +508,5 @@ void testHighDegreeCoreNeighborhood(Graph& graph, GroupSet groupSet, char* regio
 void communityProperties(Graph& graph, GroupSet groupSet, char* outFile);
 
 double diffclock(unsigned clock1,unsigned clock2);
+
+void dumpGraphDegree(Graph& graph, char* dumpDir, char* nettype);

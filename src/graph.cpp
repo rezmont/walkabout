@@ -912,6 +912,23 @@ void dumpGraph_CC(Graph graph, char* fileName) {
     return;
 }
 
+void dumpGraphDegree(Graph& graph, char* dumpDir, char* nettype) {
+    graph.calc();
+    ofstream myFile;
+    char fname[128];
+    sprintf(fname,"%s/%s_mapping.txt",dumpDir,nettype);
+    printf("Printing into : %s\n", fname);
+    myFile.open(fname);
+    myFile<<"#node\t#degree\n";
+    for(unsigned int node=0;node<graph.nodesLst.size();node++)	{
+        if (graph.nodesLst[node].neighbors->size()>0) {
+            myFile<<node<<"\t"<<graph.nodesLst[node].neighbors->size()<<endl;
+        }
+    }
+    myFile.close();
+    return;
+}
+
 
 void cleanUp(Graph& graph, char* dumpDir, char* nettype)
 {
