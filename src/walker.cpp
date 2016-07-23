@@ -1126,7 +1126,7 @@ void extendRegionCore(Graph graph,int num_walker,int walk_len ,int fileType, cha
 
     oFile.open(fileName.c_str(),ios::out);
     oFile<<"#node_id\t#deg\t#CLS\t#conf\t:";
-    for (int k=0;k<partCount-1;k++) {
+    for (int k=0;k<partCount;k++) {
         oFile<<"\t"<<k;
     }
     oFile<<endl;
@@ -1140,16 +1140,16 @@ void extendRegionCore(Graph graph,int num_walker,int walk_len ,int fileType, cha
             oFile<<-1;
             oFile<<"\t"<<-1<<"\t:";
             oFile<<"\t("<<0<<")\t:";
-            for (int k=0;k<partCount-1;k++) {
+            for (int k=0;k<partCount;k++) {
                 oFile<<"\t0(-1)[0]";
             }
             oFile<<endl;
             continue;
-        } else if (graph.nodesLst[id].getRegion()!=(partCount-1)) { /* Node in one core */
+        } else if (graph.nodesLst[id].getRegion()!=-1) { /* Node in one core */
             oFile<<graph.nodesLst[id].getRegion();
             oFile<<"\t"<<1<<"\t:";
             oFile<<"\t("<<0<<")\t:";
-            for (int k=0;k<partCount-1;k++) {
+            for (int k=0;k<partCount;k++) {
                 if (k==graph.nodesLst[id].getRegion()) oFile<<"\t1(0)";
                 else oFile<<"\t0(-1)[0]";
             }
@@ -1162,10 +1162,10 @@ void extendRegionCore(Graph graph,int num_walker,int walk_len ,int fileType, cha
             continue;
         }
 
-        vector <double> avgDistance=vector<double>(partCount-1,0);
-        vector <double> hitCoreCount=vector<double>(partCount-1,0);
-        vector <double> hitCoreNorm=vector<double>(partCount-1,0);
-        vector <int> hitCoreCountAux=vector<int>(partCount-1,0);
+        vector <double> avgDistance=vector<double>(partCount,0);
+        vector <double> hitCoreCount=vector<double>(partCount,0);
+        vector <double> hitCoreNorm=vector<double>(partCount,0);
+        vector <int> hitCoreCountAux=vector<int>(partCount,0);
         int totExp=0;
         if (walk_len>0) {
             totExp=0;
@@ -1173,24 +1173,26 @@ void extendRegionCore(Graph graph,int num_walker,int walk_len ,int fileType, cha
                 totExp ++;
                 int len=0;
                 int next=id;
-                while ((graph.nodesLst[next].getRegion()==(partCount-1)) and (len<walk_len)) {
+                while ((graph.nodesLst[next].getRegion()==-1) and (len<walk_len)) {
                     next=nextNodeIdSnowBall(graph.nodesLst[next]);
                     len++;
                 }
-                if (graph.nodesLst[next].getRegion()!=(partCount-1)) {
+                if (graph.nodesLst[next].getRegion()!=-1) {
                     /* drop value of each step */
                     hitCoreCountAux[graph.nodesLst[next].getRegion()]++;
                     hitCoreCount[graph.nodesLst[next].getRegion()]++; /* fixed maximum length */
                     // beints[graph.nodesLst[next].getRegion()]+=(double(walk_len-1)*len)/double(walk_len); /* drop point at each step */
                     hitCoreNorm[graph.nodesLst[next].getRegion()]+=(1.0/graph.nodesLst[next].neighbors->size()); /* normalize by degree */
                     avgDistance[graph.nodesLst[next].getRegion()]+=len;
-                } else i--;
+                } else {
+                    i--;
+                }
             }
         } else {
             for (int i=0;i<numChecks;i++) {
                 int next=id;
                 int len=0;
-                while (graph.nodesLst[next].getRegion()==(partCount-1)) {
+                while (graph.nodesLst[next].getRegion()==-1) {
                     next=nextNodeIdSnowBall(graph.nodesLst[next]);
                     len++;
                 }
@@ -1220,8 +1222,8 @@ void extendRegionCore(Graph graph,int num_walker,int walk_len ,int fileType, cha
             }
             /* */
 
-            vector<double> beInSetConfidence(partCount-1,-1);
-            vector<int> beInSetIndex(partCount-1,-1);
+            vector<double> beInSetConfidence(partCount,-1);
+            vector<int> beInSetIndex(partCount,-1);
             beInSetConfidence[0]=hitCoreCount[0];
             beInSetIndex[0]=0;
             for (int i=1;i<hitCoreCount.size();i++) {
@@ -1481,7 +1483,7 @@ void extendRegionCore(Graph graph,int num_walker,int walk_len ,int fileType, cha
 
     oFile<<"\t"<<"RegionCC\%"<<"\t\\\\";
     oFile<<endl;
-    for (int dst=0;dst<(partCount-1);dst++) {
+    for (int dst=0;dst<partCount;dst++) {
         int dstRegion=dst;
 
         oFile<<"$R"<<dstRegion<<"$\t&";

@@ -916,7 +916,7 @@ void dumpGraphDegree(Graph& graph, char* dumpDir, char* nettype) {
     graph.calc();
     ofstream myFile;
     char fname[128];
-    sprintf(fname,"%s/%s_degree.txt",dumpDir,nettype);
+    sprintf(fname,"%s/%s_degree`.txt",dumpDir,nettype);
     printf("Printing into : %s\n", fname);
     myFile.open(fname);
     myFile<<"#node\t#degree\n";
