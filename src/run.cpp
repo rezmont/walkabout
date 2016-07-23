@@ -732,7 +732,7 @@ int main ( int argc, char **argv ) {
         dumpGraph4Metis(graph, fileName);
         break;
     }
-    case 14://Region evaluation
+    case 14: /* Region evaluation */
     {
         if(regionFileType==-1) {
             printf("Unexpected option : RWdistFile or nodesPartFile should be provided\n");
@@ -788,7 +788,7 @@ int main ( int argc, char **argv ) {
         }
         break;
     }
-    case 15://Region evaluation
+    case 15: /* Region evaluation by RW escape */
     {
         if((strcmp(netType,"-1")==0)||(strcmp(dumpDir,"-1")==0))
         {
@@ -1138,7 +1138,7 @@ int main ( int argc, char **argv ) {
         //            ds2 >> graph;
         //            unsigned end_t=clock();
         //            printf("graph bin loaded in %f secs.\n\n",double(diffclock(end_t,begin_t)));
-        //            break;
+        //            break;`
         //        }
         //        default:
         //            exit(-1);

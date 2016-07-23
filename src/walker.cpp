@@ -1105,7 +1105,7 @@ void extendRegionCore(Graph graph,int num_walker,int walk_len ,int fileType, cha
     // End find the LCC
 
     ofstream oFile;
-    sprintf(fname,"%s/%s_nw_%d",dumpdir,nettype,numChecks);
+    sprintf(fname,"%s/%s_nw_%d", dumpdir, nettype, numChecks);
     if (justLCC) strcat(fname,"_LCC");
     if (walk_len>0) strcat(fname,"_wl");
     if (betweenRegions==1) { 			/* n-closest */
@@ -1131,9 +1131,8 @@ void extendRegionCore(Graph graph,int num_walker,int walk_len ,int fileType, cha
     }
     oFile<<endl;
 
-    for  (int id=0; id<graph.nodesLst.size();id++) {
-        if (graph.nodesLst[id].neighbors->size()==0)
-            continue;
+    for (unsigned int id=0; id<graph.nodesLst.size();id++) {
+        if (graph.nodesLst[id].neighbors->size()==0) { continue; }
 
         oFile<<id<<"\t"<<graph.nodesLst[id].neighbors->size()<<"\t";
         oFile.flush();
@@ -1157,6 +1156,9 @@ void extendRegionCore(Graph graph,int num_walker,int walk_len ,int fileType, cha
             oFile<<endl;
             partSize[graph.nodesLst[id].getRegion()]++;
             partMember[graph.nodesLst[id].getRegion()].push_back(id);
+            cout<<partMember.size()<<endl;
+            cout<<graph.nodesLst[id].getRegion()<<endl;
+            cout<<id<<endl;
             continue;
         }
 
@@ -1299,7 +1301,6 @@ void extendRegionCore(Graph graph,int num_walker,int walk_len ,int fileType, cha
 
     unsigned end_t_2=clock();
     printf("partitioned in %f secs.\n",double(diffclock(end_t_2,begin_t_2)));
-
 
     vector<double> partDeg(partCount,0);
     vector<double> regionDegIntra(partCount,0);
