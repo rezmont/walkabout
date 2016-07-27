@@ -741,7 +741,7 @@ void graphRegionSummarize(Graph& graph, char* nodePartFile, char* outFile) {
     cout<<"# num nodes in regions: "<<knownRegionsSize<<endl;
     cout<<"# num regions: "<<numRegions<<endl;
 
-    vector < vector <float> > graphSummAdj = vector <vector <float> > (graph.nodesLst.size(),vector <float>(numRegions,0));
+    vector < vector <float> > graphSummAdj = vector <vector <float> > (numRegions,vector <float>(numRegions,0));
 
     for (size_t n=0; n<graph.nodesLst.size(); n++) {
         int r1 = graph.nodesLst[n].getRegion();
