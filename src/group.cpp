@@ -721,3 +721,51 @@ void communityProperties(Graph& graph, GroupSet commSet, char* outFile) { //, do
     ofile.close();
     return;
 }
+
+
+void graphSummRegion(Graph& graph, char* nodePartFile, char* outFile) {
+    graph.calc();
+    cout<<"# Graph num nodes: "<<graph.nodesLst.size()<<"\n";
+    cout<<"# Graph num edges: "<<graph.noEdges<<"\n";
+    cout<<"# Graph num connected nodes: "<<graph.noNodes<<"\n";
+
+    int numRegions=0;
+    vector<int> regionSizes;
+    readPartFile(graph, numRegions, regionSizes, nodePartFile);
+
+    int knownRegionsSize = 0;
+    for (size_t i=0; i < numRegions; i++) {
+        knownRegionsSize+=regionSizes[i];
+    }
+
+    cout<<"# num nodes in regions: "<<knownRegionsSize<<endl;
+    cout<<"# num regions: "<<numRegions<<endl;
+
+    vector < vector <float> > graphSummAdj = vector <vector <float> > (graph.nodesLst.size(),vector <float>(numRegions,0));
+
+    for (size_t n=0; n<graph.nodesLst.size(); n++) {
+        int r1 = graph.nodesLst[n].getRegion();
+        for (size_t e=0; e<graph.nodesLst[n].neighbors->size();e++) {
+            int nei = graph.nodesLst[n].neighbors->at(e);
+            int r2 = graph.nodesLst[nei].getRegion();
+
+            graphSummAdj[r1][r2] += 1;
+        }
+    }
+
+    cout << "printing into file: " << outFile << endl;
+    ofstream ofile;
+    ofile.open(outFile);
+    ofile<<"#Vertices"<<"\t"<<regionSizes.size()<<endl;
+    for (size_t r=0; r<numRegions; r++) {
+        ofile<<r<<"\t"<<regionSizes[r]<<endl;
+    }
+    ofile<<"#Edges"<<endl;
+    for (size_t r1=0; r1<numRegions; r1++) {
+        for (size_t r2=0; r2<numRegions; r2++) {
+            ofile<<r1<<"\t"<<r2<<"\t"<<graphSummAdj[r1][r2]<<endl;
+        }
+    }
+    ofile.close();
+    return;
+}

@@ -816,7 +816,7 @@ int main ( int argc, char **argv ) {
         randomWalkEscapeRate(graph, partIndex, num_walker_p, maxWalkLen, simulationRounds, dumpDir, netType, walk_seed);
         break;
     }
-    case 16: { //evaluate mixing time
+    case 16: { /* evaluate mixing time */
         if ((strcmp(netType,"-1")==0)||(strcmp(dumpDir,"-1")==0)) {
             printf("Unexpected option : nettype AND dumpdir should be defined\n");
             exit (1);
@@ -1179,6 +1179,50 @@ int main ( int argc, char **argv ) {
         }
         break;
 
+    }
+    case 26: /* Graph summary based on regions */
+    {
+        if(regionFileType==-1) {
+            printf("Unexpected option : nodesPartFile should be provided\n");
+        }
+        switch (graph_type) {
+        case 0: {
+            unsigned begin_t=clock();
+            graph = graph_load1(topofile);
+            unsigned end_t=clock();
+            printf("# graph old_loaded in %f secs.\n",double(diffclock(end_t,begin_t)));
+            break;
+        }
+        case 1: {
+            unsigned begin_t=clock();
+            graph = graph_load2(topofile);
+            unsigned end_t=clock();
+            printf("# graph old_loaded in %f secs.\n",double(diffclock(end_t,begin_t)));
+            break;
+        }
+        case 5: {
+            unsigned begin_t=clock();
+            graph = graph_new_load(topofile);
+            unsigned end_t=clock();
+            printf("# graph new_loaded in %f secs.\n",double(diffclock(end_t,begin_t)));
+            break;
+        }
+        case 6: {
+            QFile file(topofile);
+            unsigned begin_t=clock();
+            file.open(QIODevice::ReadOnly);
+            QDataStream ds2(&file);
+            ds2 >> graph;
+            unsigned end_t=clock();
+            printf("graph bin loaded in %f secs.\n\n",double(diffclock(end_t,begin_t)));
+            break;
+        }
+        default:
+            exit(-1);
+        };
+
+        graphSummRegion(graph, nodePartFile, outFile);
+        break;
     }
     }
     if (dumponly) {
