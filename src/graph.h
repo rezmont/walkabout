@@ -510,4 +510,4 @@ void communityProperties(Graph& graph, GroupSet groupSet, char* outFile);
 double diffclock(unsigned clock1,unsigned clock2);
 
 void dumpGraphDegree(Graph& graph, char* dumpDir, char* nettype);
-void graphSummRegion(Graph& graph, char* nodePartFile, char* outFile);
+void graphRegionSummarize(Graph& graph, char* nodePartFile, char* outFile);

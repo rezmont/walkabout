@@ -723,7 +723,7 @@ void communityProperties(Graph& graph, GroupSet commSet, char* outFile) { //, do
 }
 
 
-void graphSummRegion(Graph& graph, char* nodePartFile, char* outFile) {
+void graphRegionSummarize(Graph& graph, char* nodePartFile, char* outFile) {
     graph.calc();
     cout<<"# Graph num nodes: "<<graph.nodesLst.size()<<"\n";
     cout<<"# Graph num edges: "<<graph.noEdges<<"\n";

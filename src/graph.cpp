@@ -571,19 +571,22 @@ void readPartFile(Graph& graph, int& partCount, vector<int> & partSize, char* fi
     }
 
     //check here
-    bool unknownSeen=false;
-    for(unsigned int i=0;i<graph.nodesLst.size();i++) {
+    int unknownSize = 0;
+    for(size_t i=0;i<graph.nodesLst.size();i++) {
         if ((graph.nodesLst[i].getRegion()==-1) && (graph.nodesLst[i].neighbors->size()>0)) {
-            if (!unknownSeen) {
+            unknownSize++;
+            if (unknownSize==1) {
                 cout<<"# Still some unknown nodes seen"<<endl;
-                unknownSeen=true;
-                partCount++;
+                cout<<"\t>>\t"<<i<<endl;
             }
-            graph.nodesLst[i].setRegion(partCount);
         }
     }
-    cout<<"# Max Set Index: "<<partCount<<endl;
     partCount++;
+    for (size_t i=0;i<partCount; i++) {
+        cout<<"r"<<i<<":\t"<<partSize[i]<<endl;
+    }
+    cout<<"unknown:\t"<<unknownSize<<endl;
+    cout<<"# Max Set Index: "<<partCount<<endl;
     return;
 }
 

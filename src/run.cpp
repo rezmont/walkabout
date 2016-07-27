@@ -1221,7 +1221,7 @@ int main ( int argc, char **argv ) {
             exit(-1);
         };
 
-        graphSummRegion(graph, nodePartFile, outFile);
+        graphRegionSummarize(graph, nodePartFile, outFile);
         break;
     }
     }
