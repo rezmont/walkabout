@@ -1151,6 +1151,13 @@ int main ( int argc, char **argv ) {
         //        break;
     case 25: { /* dump node degrees */
         switch (graph_type) {
+        case 1: {
+            unsigned begin_t=clock();
+            graph = graph_load2(topofile);
+            unsigned end_t=clock();
+            printf("# graph old_loaded in %f secs.\n",double(diffclock(end_t,begin_t)));
+            break;
+        }
         case 5: {
             unsigned begin_t=clock();
             graph = graph_new_load(topofile);
